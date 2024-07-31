@@ -84,6 +84,11 @@ event init(t = 0){
       u.y[] = 0.0;
     }
   }
+
+  // this is a workaround to address: https://github.com/Computational-Multiphase-Physics/basilisk-C_v2024_Jul23/issues/2
+  // dump (file = "dump");
+  // return 1;
+
 }
 
 scalar KAPPA[], D2c[];
@@ -120,17 +125,21 @@ event logWriting (i+=10) {
   }
 
   static FILE * fp;
-  if (i == 0) {
-    fprintf (ferr, "i dt t ke p\n");
-    fp = fopen ("log", "w");
-    fprintf(fp, "Level %d tmax %g. We %g, Ohd %3.2e, Ohs %3.2e, Bo %g\n", MAXlevel, tmax, We, Ohd, Ohs, Bo);
-    fprintf (fp, "i dt t ke\n");
-    fprintf (fp, "%d %g %g %g\n", i, dt, t, ke);
-    fclose(fp);
-  } else {
-    fp = fopen ("log", "a");
-    fprintf (fp, "%d %g %g %g\n", i, dt, t, ke);
-    fclose(fp);
+
+  if (pid() == 0){
+    if (i == 0) {
+      fprintf (ferr, "i dt t ke p\n");
+      fp = fopen ("log", "w");
+      fprintf(fp, "Level %d tmax %g. We %g, Ohd %3.2e, Ohs %3.2e, Bo %g\n", MAXlevel, tmax, We, Ohd, Ohs, Bo);
+      fprintf (fp, "i dt t ke\n");
+      fprintf (fp, "%d %g %g %g\n", i, dt, t, ke);
+      fclose(fp);
+    } else {
+      fp = fopen ("log", "a");
+      fprintf (fp, "%d %g %g %g\n", i, dt, t, ke);
+      fclose(fp);
+    }
+    fprintf (ferr, "%d %g %g %g\n", i, dt, t, ke);
   }
-  fprintf (ferr, "%d %g %g %g\n", i, dt, t, ke);
+
 }
