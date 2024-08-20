@@ -3,7 +3,8 @@
  * @author Vatsal Sanjay (vatsalsanjay@gmail.com)
  * vatsalsanjay.com
  * Physics of Fluids
- * @date Jul 30, 2024
+ * @date Aug 20, 2024
+ * @version 1.0 
  * 
 */
 
@@ -25,8 +26,8 @@
 // air-water
 #define Rho21 (1e-3)
 // Calculations!
-#define Xdist (1.02)
-#define R2Drop(x,y,a0) (sq((x - Xdist)/a0) + sq(y*a0))
+#define SPdist (0.02)
+#define R2Drop(x,y,a0) (sq((x - a0 - SPdist)/a0) + sq(y*a0))
 
 // boundary conditions
 u.t[left] = dirichlet(0.0);
@@ -86,8 +87,8 @@ event init(t = 0){
   }
 
   // this is a workaround to address: https://github.com/Computational-Multiphase-Physics/basilisk-C_v2024_Jul23/issues/2
-  // dump (file = "dump");
-  // return 1;
+  //dump (file = "dump");
+  //return 1;
 
 }
 
