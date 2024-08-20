@@ -50,7 +50,7 @@ def main():
             print(f"File {place} not found!")
             continue
         
-        exe = f"./getForce {place} {name}"
+        exe = f"./getForceNbeta {place} {name}"
         sp.run(exe, shell=True)
 
         img_name = f"{folder}/{int(t*1000):08d}.png"
